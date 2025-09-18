@@ -1,0 +1,30 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - appnet
+
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    networks:
+      - appnet
+
+  # ws:
+  #   build: .
+  #   depends_on:
+  #     - redis
+  #   ports:
+  #     - "8001:8001"
+  #   command: >
+  #     daphne -b 0.0.0.0 -p 8001 djangosockets.asgi:application
+  #   networks:
+  #     - appnet
+
+networks:
+  appnet:
